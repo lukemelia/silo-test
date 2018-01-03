@@ -1,0 +1,107 @@
+body {
+  font-family: sans-serif;
+}
+
+h1 {
+    font-size: 15px;
+}
+#yapp-application {
+  width: 500px;
+  height: 600px;
+  border: 1px solid red;
+  position: absolute;
+  left: calc(50% - 500px/2);
+  top: calc(50% - 600px/2);
+}
+.viewport {
+  position: absolute;
+  left: 100px;
+  width: 100px;
+  height: 200px;
+}
+#layer-0-viewport {
+  top: 0;
+  border: 1px solid green;
+  background: rgba(0, 255, 0, .2);
+}
+#layer-1-viewport {
+  top: 200px;
+  border: 1px solid yellow;
+  background: rgba(0, 255, 255, .2);
+}
+#layer-2-viewport {
+  top: 400px;
+  border: 1px solid purple;
+  background: rgba(255, 255, 0, .2);
+}
+.liquid-container.silo-outlet {
+  position: absolute;
+  top: 0;
+  height: 200px;
+  width: 100px;
+}
+.layer-0 .liquid-container.silo-outlet {
+  height: 120px;
+}
+
+.liquid-container.silo-outlet > .liquid-child {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.silo-container {
+  position: absolute;
+  /* top: 0; bottom: 0; left: -100%; width: 500%; */
+  top: 0; height:200px: 0; left: 0px; width: 500px;
+}
+.silo-container.layer-0 {
+  top:40px;
+  height: 120px;
+}
+.TitleBar {
+  position: absolute;
+  height: 40px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,.2);
+}
+.TabBar {
+  position: absolute;
+  bottom: 0;
+  height: 40px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(0,0,0,.2);
+}
+.silo-outlet {
+  position: absolute;
+  width: 100px;
+  top: 0;
+  bottom: 0;
+  border: 1px dashed blue;
+}
+
+.silo-0-outlet {
+  left: 0;
+}
+
+.silo-1-outlet {
+  left: 100px;
+}
+
+.silo-2-outlet {
+  left: 200px;
+}
+
+.silo-3-outlet {
+  left: 300px;
+}
+
+.silo-4-outlet {
+  left: 400px;
+}

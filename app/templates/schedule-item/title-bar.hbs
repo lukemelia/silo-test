@@ -1,0 +1,5 @@
+<div {{action "back"}} class="y-button left-button theme-color back-button">Back</div>
+
+{{#if model.yapp.myScheduleEnabled}}
+  <div {{action "visitMySchedule"}} class="y-button right-button theme-color icon-button my-schedule-button {{flash-on-my-schedule-changed 'animated' duration=2}}"></div>
+{{/if}}
