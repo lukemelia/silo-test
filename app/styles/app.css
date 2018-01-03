@@ -44,7 +44,9 @@ h1 {
   height: 120px;
 }
 
-.liquid-container.silo-outlet > .liquid-child {
+.liquid-container.silo-outlet > .liquid-child,
+.silo-outlet > .liquid-container,
+.silo-outlet > .liquid-container > .liquid-child {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -55,7 +57,7 @@ h1 {
 .silo-container {
   position: absolute;
   /* top: 0; bottom: 0; left: -100%; width: 500%; */
-  top: 0; height:200px: 0; left: 0px; width: 500px;
+  top: 0; height:200px; left: 0px; width: 500px;
 }
 .silo-container.layer-0 {
   top:40px;
@@ -84,6 +86,9 @@ h1 {
   top: 0;
   bottom: 0;
   border: 1px dashed blue;
+}
+.silo-outlet > .liquid-container {
+
 }
 
 .silo-0-outlet {

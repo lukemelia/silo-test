@@ -1,6 +1,24 @@
-<div class="y-content-wrapper">
-  <div class='y-page-content' style="position:absolute;top:0;bottom:0;left:0;right:0">
-    <h1>schedule-item {{model.slug}}</h1>
-    {{#link-to 'schedule-item.rating-form' model}}Rate{{/link-to}}
-  </div>
-</div>
+{{to-elsewhere
+    named=(concat 'layer-' layerIndex '-silo-' siloIndex)
+    send=(component
+            routeComponent
+            model=model
+            layerIndex=layerIndex
+            siloIndex=siloIndex
+            drillDownToRatingForm=(route-action 'drillDownToRatingForm')
+            back=(route-action 'back')
+            visitMySchedule=(route-action 'visitMySchedule')
+
+         )
+}}
+
+{{to-elsewhere named=(concat 'layer-' layerIndex '-title-bar')
+    send=(component titleBarComponent
+      model=model
+      siloIndex=siloIndex
+      back=(route-action 'back')
+      visitMySchedule=(route-action 'visitMySchedule')
+    )
+}}
+
+{{outlet}}
