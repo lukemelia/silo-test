@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import layout from './template';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
 
 export default Component.extend({
   layer: null, // PT.number.isRequired
@@ -18,20 +19,62 @@ export default Component.extend({
   }),
   components: computed.mapBy('stackItems', 'component'),
   titleBarTransitionRules,
-  siloTransitionRules
+  stackItemTransitionRules
 });
+
+function titleBarHasSameRootPage(newValue, oldValue) {
+  let newRootPageReference = newValue.titleBar && newValue.titleBar.args.named.rootPage;
+  let oldRootPageReference = oldValue.titleBar && oldValue.titleBar.args.named.rootPage;
+  return newRootPageReference && oldRootPageReference && get(newRootPageReference.value(), 'id') === get(oldRootPageReference.value(), 'id');
+}
+
+function stackItemHasSameRootPage(newValue, oldValue) {
+  let newRootPageReference = newValue.item && newValue.item.args.named.rootPage;
+  let oldRootPageReference = oldValue.item && oldValue.item.args.named.rootPage;
+  return newRootPageReference && oldRootPageReference && get(newRootPageReference.value(), 'id') === get(oldRootPageReference.value(), 'id');
+}
 
 function titleBarTransitionRules() {
   this.transition(
     this.use('slideTitle', 'left'),
-    this.reverse('slideTitle', 'right'),
     this.toValue(function(newValue, oldValue) {
-      return newValue.stackDepth > oldValue.stackDepth;
+      return titleBarHasSameRootPage(newValue, oldValue) && newValue.stackDepth > oldValue.stackDepth;
+    })
+  );
+  this.transition(
+    this.use('slideTitle', 'right'),
+    this.toValue(function(newValue, oldValue) {
+      return titleBarHasSameRootPage(newValue, oldValue) && newValue.stackDepth < oldValue.stackDepth;
     })
   );
 }
 
-function siloTransitionRules() {
+function stackItemTransitionRules() {
+  const SLIDE_EASING = 'easeInOutQuint';
+  const SLIDE_DURATION = 450;
+
+  this.setDefault({
+    duration: SLIDE_DURATION,
+    easing: SLIDE_EASING
+  });
+
+  this.transition(
+    this.onInitialRender(),
+    this.use('stackBasedCut')
+  );
+  this.transition(
+    this.toValue(function(newValue, oldValue) {
+      return !stackItemHasSameRootPage(newValue, oldValue);
+    }),
+    this.use('stackBasedCut')
+  );
+  this.transition(
+    this.toValue(function(newValue, oldValue) {
+      return stackItemHasSameRootPage(newValue, oldValue) && newValue.stackDepth !== oldValue.stackDepth;
+    }),
+    this.use('stackBasedSlide')
+  );
+
   // this.transition(
   //   this.toValue(function(newValue) {
   //     return !!newValue.c && newValue.c.name !== 'more-contents';

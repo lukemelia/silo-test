@@ -8,8 +8,12 @@
     <div class={{concat 'silo-container layer-' layer}} style="left: 0;">
       {{#each components as |stackItemComponent index|}}
         <div class={{concat 'silo-outlet silo-' index '-outlet'}}>
-          {{#liquid-bind stackItemComponent rules=siloTransitionRules as |currentStackItemComponent|}}
-            {{component currentStackItemComponent}}
+          {{log (concat 'rendering new liquid-bind index' index)}}
+          {{#liquid-bind (hash item=stackItemComponent index=index stackDepth=stackItems.length)
+              rules=stackItemTransitionRules
+              as |hash|
+          }}
+            {{component hash.item}}
           {{/liquid-bind}}
         </div>
       {{/each}}

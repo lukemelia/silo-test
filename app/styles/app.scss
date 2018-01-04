@@ -102,27 +102,7 @@ h1 {
   box-sizing: border-box;
 }
 .silo-outlet > .liquid-container {
-
-}
-
-.silo-0-outlet {
-  left: 0;
-}
-
-.silo-1-outlet {
-  left: 100px;
-}
-
-.silo-2-outlet {
-  left: 200px;
-}
-
-.silo-3-outlet {
-  left: 300px;
-}
-
-.silo-4-outlet {
-  left: 400px;
+  overflow: visible;
 }
 
 .y-page-content {
