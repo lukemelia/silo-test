@@ -3,6 +3,11 @@ import layout from './template';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
+import { scheduleOnce } from '@ember/runloop';
+import { animate } from 'liquid-fire';
+import { observer } from '@ember/object';
+const SLIDE_EASING = 'easeInOutQuint';
+const SLIDE_DURATION = 450;
 
 export default Component.extend({
   layer: null, // PT.number.isRequired
@@ -17,99 +22,115 @@ export default Component.extend({
   stackItems: computed('layer', 'navStacksService.stacks', function(){
     return this.get(`navStacksService.stacks.layer${this.get('layer')}`);
   }),
+  stackDepth: computed.readOnly('stackItems.length'),
   components: computed.mapBy('stackItems', 'component'),
   titleBarTransitionRules,
-  stackItemTransitionRules
+  didInsertElement(){
+    this._super(...arguments);
+    this.scheduleCut();
+    this.setTitleBarInfo();
+  },
+  stackDepthChanged: observer('stackItems', function() {
+    let stackDepth = this.get('stackItems.length');
+    let rootComponentRef = this.get('stackItems.firstObject.component');
+    let rootComponentIdentifier = getComponentIdentifier(rootComponentRef);
+    let titleBarAnimation = 'cut';
+
+    if (stackDepth === 1 && rootComponentIdentifier !== this._rootComponentIdentifier) {
+      this.scheduleCut();
+    } else if (stackDepth < this._stackDepth) {
+      this.scheduleSlideBack();
+      titleBarAnimation = 'slideBack';
+    } else if (stackDepth > this._stackDepth) {
+      this.scheduleSlideForward();
+      titleBarAnimation = 'slideForward';
+    }
+    this.setTitleBarInfo(titleBarAnimation);
+    this._stackDepth = stackDepth;
+    this._rootComponentIdentifier = rootComponentIdentifier;
+  }),
+  setTitleBarInfo(enterAnimation = 'cut') {
+    this.set('titleBarInfo', {
+      component: this.get('stackItems.lastObject.titleBarComponent'),
+      enterAnimation
+    });
+  },
+  scheduleCut() {
+    scheduleOnce('afterRender', this, this.cut);
+  },
+  scheduleSlideBack() {
+    this.cloneLastStackItem();
+    scheduleOnce('afterRender', this, this.slideBack);
+  },
+  scheduleSlideForward() {
+    scheduleOnce('afterRender', this, this.slideForward);
+  },
+  cut() {
+    let stackDepth = this.get('stackDepth');
+    let layerX = (stackDepth - 1) * -100;
+    this.$('.silo-container').css('left', layerX);
+  },
+  slideForward() {
+    let stackDepth = this.get('stackDepth');
+    let layerX = (stackDepth - 1) * -100;
+    let params = {
+      left: layerX
+    };
+    animate(
+      this.$('.silo-container'),
+      params,
+      { duration: SLIDE_DURATION, easing: SLIDE_EASING },
+      'layer-slide'
+    );
+  },
+  slideBack() {
+    let stackDepth = this.get('stackDepth');
+    let layerX = (stackDepth - 1) * -100;
+    let params = {
+      left: layerX
+    };
+    animate(
+      this.$('.silo-container'),
+      params,
+      { duration: SLIDE_DURATION, easing: SLIDE_EASING },
+      'layer-slide'
+    ).finally(() => {
+      if (this.clonedStackItem) {
+        this.clonedStackItem.remove();
+        this.clonedStackItem = null;
+      }
+    });
+  },
+  cloneLastStackItem() {
+    let clone = this.clonedStackItem = this.$('.silo-outlet:last-child').clone();
+    clone.attr('id', `${this.elementId}_clonedStackItem`);
+    this.attachClone(clone);
+  },
+  attachClone(clone) {
+    this.$('.silo-container').append(clone);
+  }
 });
-
-function titleBarHasSameRootPage(newValue, oldValue) {
-  let newRootPageReference = newValue.titleBar && newValue.titleBar.args.named.rootPage;
-  let oldRootPageReference = oldValue.titleBar && oldValue.titleBar.args.named.rootPage;
-  return newRootPageReference && oldRootPageReference && get(newRootPageReference.value(), 'id') === get(oldRootPageReference.value(), 'id');
-}
-
-function stackItemHasSameRootPage(newValue, oldValue) {
-  let newRootPageReference = newValue.item && newValue.item.args.named.rootPage;
-  let oldRootPageReference = oldValue.item && oldValue.item.args.named.rootPage;
-  return newRootPageReference && oldRootPageReference && get(newRootPageReference.value(), 'id') === get(oldRootPageReference.value(), 'id');
-}
 
 function titleBarTransitionRules() {
   this.transition(
     this.use('slideTitle', 'left'),
-    this.toValue(function(newValue, oldValue) {
-      return titleBarHasSameRootPage(newValue, oldValue) && newValue.stackDepth > oldValue.stackDepth;
+    this.toValue(function(newValue) {
+      return newValue.enterAnimation === 'slideForward';
     })
   );
+
   this.transition(
     this.use('slideTitle', 'right'),
-    this.toValue(function(newValue, oldValue) {
-      return titleBarHasSameRootPage(newValue, oldValue) && newValue.stackDepth < oldValue.stackDepth;
+    this.toValue(function(newValue) {
+      return newValue.enterAnimation === 'slideBack';
     })
   );
 }
 
-function stackItemTransitionRules() {
-  const SLIDE_EASING = 'easeInOutQuint';
-  const SLIDE_DURATION = 450;
-
-  this.setDefault({
-    duration: SLIDE_DURATION,
-    easing: SLIDE_EASING
-  });
-
-  this.transition(
-    this.onInitialRender(),
-    this.use('stackBasedCut')
-  );
-  this.transition(
-    this.toValue(function(newValue, oldValue) {
-      return !stackItemHasSameRootPage(newValue, oldValue);
-    }),
-    this.use('stackBasedCut')
-  );
-  this.transition(
-    this.toValue(function(newValue, oldValue) {
-      return stackItemHasSameRootPage(newValue, oldValue) && newValue.stackDepth !== oldValue.stackDepth;
-    }),
-    this.use('stackBasedSlide')
-  );
-
-  // this.transition(
-  //   this.toValue(function(newValue) {
-  //     return !!newValue.c && newValue.c.name !== 'more-contents';
-  //   }),
-  //   this.onInitialRender(),
-  //   this.use('cutToSilo'),
-  // );
-  // this.transition(
-  //   this.toValue(function(newValue) {
-  //     return !!newValue.c && newValue.c.name !== 'more-contents';
-  //   }),
-  //   this.use('slideToSilo')
-  // );
-  // this.transition(
-  //   this.toValue(function(newValue, oldValue) {
-  //     if (!newValue.c || !oldValue.c) {
-  //       return false;
-  //     }
-  //     if (newValue.c.name === 'more-contents') {
-  //       return false;
-  //     }
-  //     let newRootPage = newValue.c.args.named.rootPage.value();
-  //     let oldRootPage = oldValue.c.args.named.rootPage.value();
-  //     // console.log('newRootPage', newRootPage, 'oldRootPage', oldRootPage);
-  //     return newRootPage && oldRootPage && get(newRootPage, 'id') !== get(oldRootPage, 'id');
-  //   }),
-  //   this.use('cutToSilo')
-  // );
-  // this.transition(
-  //   this.toValue(function(newValue) {
-  //     if (newValue.c.name === 'more-contents') {
-  //       return false;
-  //     }
-  //     return !newValue.c;
-  //   }),
-  //   this.use('slideToSilo', -1)
-  // );
+function getComponentIdentifier(componentRef) {
+  let result = componentRef.name;
+  if (componentRef.args.named.model) {
+    result += `:${get(componentRef.args.named.model.value(), 'id')}`;
+  }
+  return result;
 }
