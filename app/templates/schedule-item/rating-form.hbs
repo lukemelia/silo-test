@@ -1,22 +1,19 @@
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-silo-' siloIndex)
-    send=(component
+{{to-nav-stack
+    layer=layerIndex
+    item=(component
             routeComponent
             model=model
             layerIndex=layerIndex
             siloIndex=siloIndex
             rootPage=rootPage
             back=(route-action 'back')
-         )
-}}
-
-{{to-elsewhere named=(concat 'layer-' layerIndex '-title-bar')
-    send=(component titleBarComponent
-      model=model
-      siloIndex=siloIndex
-      rootPage=rootPage
-      back=(route-action 'back')
-    )
+     )
+     titleBar=(component titleBarComponent
+       model=model
+       siloIndex=siloIndex
+       rootPage=rootPage
+       back=(route-action 'back')
+     )
 }}
 
 {{outlet}}

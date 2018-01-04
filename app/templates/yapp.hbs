@@ -1,14 +1,14 @@
-{{#each (array 0 1 2) as |layerIndex|}}
-  {{silos-layer
-      layerIndex=layerIndex
-      numSilos=5
-      hasTabBar=(eq layerIndex 0)
+{{#each (array 0 1 2) as |layer|}}
+  {{nav-stack
+      layer=layer
+      hasTabBar=(eq layer 0)
   }}
 {{/each}}
 
-{{to-elsewhere
-    named="layer-0-silo-0"
-    send=(component 'more-contents')
+{{to-nav-stack
+    layer=0
+    item=(component 'more-contents')
+    titleBar=(component 'routable-components/yapp/more/title-bar')
 }}
 
 {{outlet}}

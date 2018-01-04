@@ -1,0 +1,27 @@
+<div class='y-page-base perspective y-background-lightness-{{model.backgroundLightness}} theme-{{model.backgroundLightness}}'>
+  <div class='y-page y-page-base {{themeClasses}}  {{unless hasTabBar 'no-tab-bar'}}'>
+    <div class="TitleBar">
+      {{#liquid-bind (hash titleBar=titleBarComponent stackDepth=stackItems.length) rules=titleBarTransitionRules as |hash|}}
+        {{component hash.titleBar}}
+      {{/liquid-bind}}
+    </div>
+    <div class={{concat 'silo-container layer-' layer}} style="left: 0;">
+      {{#each components as |stackItemComponent index|}}
+        <div class={{concat 'silo-outlet silo-' index '-outlet'}}>
+          {{#liquid-bind stackItemComponent rules=siloTransitionRules as |currentStackItemComponent|}}
+            {{component currentStackItemComponent}}
+          {{/liquid-bind}}
+        </div>
+      {{/each}}
+    </div>
+    {{#if hasTabBar}}
+      <div class="TabBar">
+        <ul>
+          <li>{{#link-to 'page' 1}}Page 1{{/link-to}}</li>
+          <li>{{#link-to 'page' 2}}Page 2{{/link-to}}</li>
+          <li>{{#link-to 'yapp.more'}}More{{/link-to}}</li>
+        </ul>
+      </div>
+    {{/if}}
+  </div>
+</div>

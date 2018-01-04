@@ -1,6 +1,6 @@
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-silo-' siloIndex)
-    send=(component
+{{to-nav-stack
+    layer=layerIndex
+    item=(component
             routeComponent
             model=model
             layerIndex=layerIndex
@@ -9,13 +9,8 @@
             drillDownToRatingForm=(route-action 'drillDownToRatingForm')
             back=(route-action 'back')
             visitMySchedule=(route-action 'visitMySchedule')
-
-         )
-}}
-
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-title-bar')
-    send=(component titleBarComponent
+    )
+    titleBar=(component titleBarComponent
       model=model
       siloIndex=siloIndex
       rootPage=rootPage

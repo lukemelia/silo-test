@@ -18,7 +18,7 @@ h1 {
 
 .viewport {
   position: absolute;
-  left: 100px;
+  left: 0px;
   width: 100px;
   height: 200px;
 }
@@ -82,11 +82,15 @@ h1 {
   left: 0;
   right: 0;
   background: rgba(0,0,0,.2);
+  ul {
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+  }
   li {
     list-style: none;
-    float:left;
-    display: block;
-    width: 50%;
+    display: inline-block;
+    font-size: 9px;
   }
 }
 .silo-outlet {

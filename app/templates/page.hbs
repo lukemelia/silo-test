@@ -1,23 +1,19 @@
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-silo-' siloIndex)
-    send=(component
+{{to-nav-stack
+    layer=layerIndex
+    item=(component
             routeComponent
             model=model
             layerIndex=layerIndex
             siloIndex=siloIndex
             rootPage=rootPage
             drillDownToScheduleItem=(route-action 'drillDownToScheduleItem')
-            backToMorePage=(route-action 'backToMorePage')
-         )
-}}
-
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-title-bar')
-    send=(component titleBarComponent
+    )
+    titleBar=(component titleBarComponent
       model=model
       siloIndex=siloIndex
       rootPage=rootPage
       visitMySchedule=(route-action 'visitMySchedule')
+      backToMorePage=(route-action 'backToMorePage')
     )
 }}
 
