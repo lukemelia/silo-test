@@ -6,16 +6,16 @@
             layerIndex=layerIndex
             siloIndex=siloIndex
             rootPage=rootPage
-            back=(route-action 'back')
+            drillDownToScheduleItem=(route-action 'drillDownToScheduleItem')
+            backToMorePage=(route-action 'backToMorePage')
          )
 }}
 
-{{to-elsewhere named=(concat 'layer-' layerIndex '-title-bar')
+{{to-elsewhere
+    named=(concat 'layer-' layerIndex '-title-bar')
     send=(component titleBarComponent
       model=model
       siloIndex=siloIndex
-      rootPage=rootPage
-      back=(route-action 'back')
     )
 }}
 

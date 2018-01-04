@@ -2,12 +2,19 @@ import { Promise as EmberPromise } from 'rsvp';
 import Ember from 'ember';
 import { animate } from 'liquid-fire';
 
-export default function(toSiloIndex, opts = {}) {
+export default function(offset = 0, opts = {}) {
+  let siloIndex;
+  if (this.newValue) {
+    siloIndex = this.newValue.c.args.named.siloIndex.value();
+  } else if (this.oldValue) {
+    siloIndex = this.oldValue.c.args.named.siloIndex.value();
+  }
+  siloIndex = siloIndex + offset;
+
   // entering level siloIndex
-  let siloIndex = toSiloIndex;
   let siloContainer = this.newElement.closest('.silo-container');
   let currentSiloIndex = this.newElement.data('current-index') || 0;
-  if (currentSiloIndex > toSiloIndex) {
+  if (currentSiloIndex > siloIndex) {
     if (this.oldElement) {
       // TODO check if we're interrupting a 'sliding-silo-container' animation
       let left = siloIndex * -100;
@@ -17,7 +24,7 @@ export default function(toSiloIndex, opts = {}) {
 
       this.newElement.css({ visibility: '' });
       return animate(siloContainer, params, opts, 'sliding-silo-container').finally(() => {
-        siloContainer.data('current-index', toSiloIndex);
+        siloContainer.data('current-index', siloIndex);
       });
     }
   } else {
@@ -45,7 +52,7 @@ export default function(toSiloIndex, opts = {}) {
       return animate(siloContainer, params, opts, 'sliding-silo-container').finally(function() {
         // $listItem.removeClass('active');
         siloContainer.data('is-animating-silo-index', null);
-        siloContainer.data('current-index', toSiloIndex);
+        siloContainer.data('current-index', siloIndex);
       });
     }
   }

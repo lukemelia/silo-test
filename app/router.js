@@ -37,7 +37,7 @@ Router.map(function() {
       this.route('schedule-item', { path: '/schedule-items/:schedule_item_id', resetNamespace: true }, function() {  // layer 0, silo 2
         this.route('rating-form');  // layer 0, silo 3
         this.route('person');  // layer 1, silo 0
-          myScheduleRoutes(this);
+        myScheduleRoutes(this);
       });
       this.route('track', { path: '/tracks/:track_id', resetNamespace: true }, function() { // track_id is "all" or UUID   // layer 1, silo 2
         this.route('schedule-item', { path: '/schedule-items/:schedule_item_id' }, function() {   // layer 0, silo 3

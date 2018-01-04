@@ -21,6 +21,7 @@ export default Mixin.create({
     controller.setProperties({
       siloIndex: this.get('siloIndex'),
       layerIndex: this.get('layerIndex'),
+      rootPage: this.modelFor('page'),
       routeComponent: this.getRouteComponent(model),
       titleBarComponent: this.getTitleBarComponent(model)
     });

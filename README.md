@@ -3,6 +3,15 @@
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
 
+## Verify
+
+### Initial load:
+
+√ http://localhost:4200/yapp/more - Renders Silo 0 in viewport
+√ http://localhost:4200/yapp/pages/1 - Renders Silo 1 in viewport
+x http://localhost:4200/yapp/pages/1/schedule-items/1 - Renders Silo 2 in viewport
+x http://localhost:4200/yapp/pages/1/schedule-items/1/rating-form - Renders Silo 3 in viewport
+
 ## Prerequisites
 
 You will need the following things properly installed on your computer.

@@ -1,76 +1,14 @@
-<div id="layer-0-viewport" class="viewport">
-  <div class='y-page-base perspective y-background-lightness-{{model.backgroundLightness}} theme-{{model.backgroundLightness}}'>
-    <div class='y-page y-page-base {{themeClasses}}  {{unless showingTabBar 'no-tab-bar'}}'>
-      <div class="TitleBar">
-        {{#from-elsewhere name="layer-0-title-bar" as |titleBarComponent|}}
-          {{#liquid-bind titleBarComponent rules=titleBarTransitionRules as |currentTitleBarComponent|}}
-            {{component currentTitleBarComponent}}
-          {{/liquid-bind}}
-        {{/from-elsewhere}}
-      </div>
-      <div class='silo-container layer-0' style="left: 0;">
-        <div class="silo-outlet silo-0-outlet">
-          MORE
-        </div>
-        <div class="silo-outlet silo-1-outlet">
-          {{#from-elsewhere name="layer-0-silo-1" as |screenComponent|}}
-            {{#liquid-bind screenComponent rules=silo1TransitionRules as |currentScreenComponent|}}
-              {{component currentScreenComponent}}
-            {{/liquid-bind}}
-          {{/from-elsewhere}}
-        </div>
-        <div class="silo-outlet silo-2-outlet">
-          {{#from-elsewhere name="layer-0-silo-2" as |screenComponent|}}
-            {{#liquid-bind screenComponent rules=silo2TransitionRules as |currentScreenComponent|}}
-              {{component currentScreenComponent}}
-            {{/liquid-bind}}
-          {{/from-elsewhere}}
-        </div>
-        <div class="silo-outlet silo-3-outlet">
-          {{#from-elsewhere name="layer-0-silo-3" as |screenComponent|}}
-            {{#liquid-bind screenComponent rules=silo3TransitionRules as |currentScreenComponent|}}
-              {{component currentScreenComponent}}
-            {{/liquid-bind}}
-          {{/from-elsewhere}}
-        </div>
-        <div class="silo-outlet silo-4-outlet">
-          {{#from-elsewhere name="layer-0-silo-4" as |screenComponent|}}
-            {{#liquid-bind screenComponent rules=silo4TransitionRules as |currentScreenComponent|}}
-              {{component currentScreenComponent}}
-            {{/liquid-bind}}
-          {{/from-elsewhere}}
-        </div>
-      </div>
-      <div class="TabBar">
-        Tab Bar
-      </div>
-    </div>
-  </div>
-</div>
+{{#each (array 0 1 2) as |layerIndex|}}
+  {{silos-layer
+      layerIndex=layerIndex
+      numSilos=5
+      hasTabBar=(eq layerIndex 0)
+  }}
+{{/each}}
 
-<div id="layer-1-viewport" class="viewport">
-  <div class='silo-container layer-1' style="left: 0;">
-    <div class="silo-outlet silo-1-outlet">
-      {{from-elsewhere name="layer-1-silo-1"}}
-    </div>
-    <div class="silo-outlet silo-2-outlet">
-      {{from-elsewhere name="layer-1-silo-2"}}
-    </div>
-    <div class="silo-outlet silo-3-outlet">
-      {{from-elsewhere name="layer-1-silo-3"}}
-    </div>
-    <div class="silo-outlet silo-4-outlet">
-      {{from-elsewhere name="layer-1-silo-4"}}
-    </div>
-  </div>
-</div>
-
-<div id="layer-2-viewport" class="viewport">
-  <div class='silo-container layer-2' style="left: 0;">
-    <div class="silo-outlet silo-1-outlet">
-      {{from-elsewhere name="layer-2-silo-1"}}
-    </div>
-  </div>
-</div>
+{{to-elsewhere
+    named="layer-0-silo-0"
+    send=(component 'more-contents')
+}}
 
 {{outlet}}

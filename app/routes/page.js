@@ -7,7 +7,8 @@ export default Route.extend(LiquidSiloRoute, {
     return {
       pageTitle: params.page_id,
       slug: 'schedule2',
-      id: params.page_id
+      id: params.page_id,
+      isUnderMorePage: params.page_id > 2
     };
   },
   actions: {
@@ -17,5 +18,8 @@ export default Route.extend(LiquidSiloRoute, {
     visitMySchedule() {
       console.log('TODO');
     },
+    backToMorePage() {
+      this.transitionTo('yapp.more');
+    }
   }
 });
