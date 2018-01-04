@@ -1,22 +1,7 @@
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-silo-' siloIndex)
-    send=(component
-            routeComponent
-            model=model
-            layerIndex=layerIndex
-            siloIndex=siloIndex
-            rootPage=rootPage
-            drillDownToScheduleItem=(route-action 'drillDownToScheduleItem')
-            backToMorePage=(route-action 'backToMorePage')
-         )
-}}
-
-{{to-elsewhere
-    named=(concat 'layer-' layerIndex '-title-bar')
-    send=(component titleBarComponent
-      model=model
-      siloIndex=siloIndex
-    )
+{{to-nav-stack
+    layer=0
+    item=(component 'routable-components/yapp/more')
+    titleBar=(component 'routable-components/yapp/more/title-bar')
 }}
 
 {{outlet}}

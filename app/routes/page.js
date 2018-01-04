@@ -11,6 +11,11 @@ export default Route.extend(LiquidSiloRoute, {
       isUnderMorePage: params.page_id > 2
     };
   },
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('shouldRenderMore', model.isUnderMorePage); // TODO make this true for iOS-only
+  },
+
   actions: {
     drillDownToScheduleItem(scheduleItem) {
       this.transitionTo('schedule-item', scheduleItem);

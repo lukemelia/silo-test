@@ -1,3 +1,11 @@
+{{#if shouldRenderMore}}
+  {{to-nav-stack
+      layer=0
+      item=(component 'routable-components/yapp/more')
+      titleBar=(component 'routable-components/yapp/more/title-bar')
+  }}
+{{/if}}
+
 {{to-nav-stack
     layer=layerIndex
     item=(component

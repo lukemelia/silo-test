@@ -1,14 +1,8 @@
-{{#each (array 0 1 2) as |layer|}}
+{{#each (array 0) as |layer|}}
   {{nav-stack
       layer=layer
       hasTabBar=(eq layer 0)
   }}
 {{/each}}
-
-{{to-nav-stack
-    layer=0
-    item=(component 'more-contents')
-    titleBar=(component 'routable-components/yapp/more/title-bar')
-}}
 
 {{outlet}}
