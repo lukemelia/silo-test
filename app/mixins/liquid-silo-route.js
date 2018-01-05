@@ -2,26 +2,21 @@ import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 
 export default Mixin.create({
-  layerIndex: 0,
   getRouteComponent(/* model */) {
     return `routable-components/${(this.templateName || this.routeName).replace(/\./g,'/')}`;
   },
   getTitleBarComponent(model) {
     return `${this.getRouteComponent(model)}/title-bar`;
   },
-  siloIndex: computed(function() {
+  layerIndex: computed(function() {
     let parentRoute = this.router.getParentRoute(this);
-    let parentRouteSiloIndex = parentRoute.get('siloIndex');
-    if (parentRouteSiloIndex) {
-      return parentRouteSiloIndex + 1;
-    }
+    let parentRoutelayerIndex = parentRoute.get('layerIndex');
+    return parentRoutelayerIndex || 0;
   }),
   setupController(controller, model) {
     this._super(controller, model);
     controller.setProperties({
-      siloIndex: this.get('siloIndex'),
       layerIndex: this.get('layerIndex'),
-      rootPage: this.modelFor('page'),
       routeComponent: this.getRouteComponent(model),
       titleBarComponent: this.getTitleBarComponent(model)
     });
