@@ -1,8 +1,8 @@
-<div class='y-page-base perspective y-background-lightness-{{model.backgroundLightness}} theme-{{model.backgroundLightness}}'>
-  <div class='y-page y-page-base {{themeClasses}}  {{unless hasTabBar 'no-tab-bar'}}'>
-    <div class="silo-container">
+<div class='y-page-base perspective'>
+  <div class='y-page y-page-base'>
+    <div class="NavStack-itemContainer">
       {{#each components as |stackItemComponent index|}}
-        <div class={{concat 'silo-outlet silo-' index '-outlet'}}>
+        <div class={{concat 'NavStack-item NavStack-item-' index}}>
           {{#if (lte (sub stackDepth index) 2)}}
             {{component stackItemComponent}}
           {{/if}}

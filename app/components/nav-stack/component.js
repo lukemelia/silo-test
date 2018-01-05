@@ -15,10 +15,10 @@ export default Component.extend({
   layer: null, // PT.number.isRequired
   navStacksService: service('nav-stacks'),
   layout,
-  classNames: ['layer-container', 'viewport'],
-  classNameBindings: ['layerIndexCssClass', 'hasTabBar'],
+  classNames: ['NavStack'],
+  classNameBindings: ['layerIndexCssClass', 'hasTabBar:NavStack--withTabBar'],
   layerIndexCssClass: computed('layer', function() {
-    return `layer-${this.get('layer')}`;
+    return `NavStack--layer${this.get('layer')}`;
   }),
   titleBarComponent: computed.readOnly('stackItems.lastObject.titleBarComponent'),
   stackItems: computed('layer', 'navStacksService.stacks', function(){
@@ -93,7 +93,7 @@ export default Component.extend({
     if (!BIRDS_EYE_DEBUGGING) {
       layerX = `${layerX}%`;
     }
-    this.$('.silo-container').css('left', layerX);
+    this.$('.NavStack-itemContainer').css('left', layerX);
     if (layer > 0 & stackDepth > 0) {
       this.$().css('top', 0);
     }
@@ -108,7 +108,7 @@ export default Component.extend({
       left: layerX
     };
     animate(
-      this.$('.silo-container'),
+      this.$('.NavStack-itemContainer'),
       params,
       { duration: SLIDE_DURATION, easing: SLIDE_EASING },
       'layer-slide'
@@ -124,7 +124,7 @@ export default Component.extend({
       left: layerX
     };
     animate(
-      this.$('.silo-container'),
+      this.$('.NavStack-itemContainer'),
       params,
       { duration: SLIDE_DURATION, easing: SLIDE_EASING },
       'layer-slide'
@@ -164,12 +164,12 @@ export default Component.extend({
   },
 
   cloneLastStackItem() {
-    let clone = this.clonedStackItem = this.$('.silo-outlet:last-child').clone();
+    let clone = this.clonedStackItem = this.$('.NavStack-item:last-child').clone();
     clone.attr('id', `${this.elementId}_clonedStackItem`);
     this.attachClone(clone);
   },
   attachClone(clone) {
-    this.$('.silo-container').append(clone);
+    this.$('.NavStack-itemContainer').append(clone);
   }
 });
 
