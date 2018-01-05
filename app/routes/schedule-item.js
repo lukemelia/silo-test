@@ -1,13 +1,16 @@
 import Route from '@ember/routing/route';
-import LiquidSiloRoute from 'silo-test/mixins/liquid-silo-route';
+import StackableRoute from 'silo-test/mixins/stackable-route';
 import AnimationAwareMixin from 'silo-test/mixins/animation-aware';
 
-export default Route.extend(AnimationAwareMixin, LiquidSiloRoute, {
+export default Route.extend(AnimationAwareMixin, StackableRoute, {
   model(params = {}) {
     let page = this.modelFor('page');
     return {
       slug: params.schedule_item_id,
-      page
+      page,
+      yapp: {
+        myScheduleEnabled: true
+      }
     };
   },
   actions: {

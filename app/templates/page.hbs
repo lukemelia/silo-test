@@ -8,17 +8,8 @@
 
 {{to-nav-stack
     layer=layerIndex
-    item=(component
-            routeComponent
-            model=model
-            layerIndex=layerIndex
-            drillDownToScheduleItem=(route-action 'drillDownToScheduleItem')
-    )
-    titleBar=(component titleBarComponent
-      model=model
-      visitMySchedule=(route-action 'visitMySchedule')
-      backToMorePage=(route-action 'backToMorePage')
-    )
+    item=(component routeComponent model=model)
+    titleBar=(component titleBarComponent model=model)
 }}
 
 {{outlet}}

@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import AnimationAwareMixin from 'silo-test/mixins/animation-aware';
-import LiquidSiloRoute from 'silo-test/mixins/liquid-silo-route';
+import StackableRoute from 'silo-test/mixins/stackable-route';
 
-export default Route.extend(AnimationAwareMixin, LiquidSiloRoute, {
-  siloIndex: 0
+export default Route.extend(AnimationAwareMixin, StackableRoute, {
+  templateName: 'yapp/more'
 });

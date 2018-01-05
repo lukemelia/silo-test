@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
-import LiquidSiloRoute from 'silo-test/mixins/liquid-silo-route';
+import StackableRoute from 'silo-test/mixins/stackable-route';
 import AnimationAwareMixin from 'silo-test/mixins/animation-aware';
 
-export default Route.extend(LiquidSiloRoute, AnimationAwareMixin, {
+export default Route.extend(StackableRoute, AnimationAwareMixin, {
   layerIndex: 1,
   actions: {
     close() {

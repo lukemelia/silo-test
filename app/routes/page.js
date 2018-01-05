@@ -1,14 +1,15 @@
 import Route from '@ember/routing/route';
-import LiquidSiloRoute from 'silo-test/mixins/liquid-silo-route';
+import StackableRoute from 'silo-test/mixins/stackable-route';
 
-export default Route.extend(LiquidSiloRoute, {
-  siloIndex: 1,
+export default Route.extend(StackableRoute, {
+  templateName: 'page',
   model(params = {}) {
     return {
       pageTitle: params.page_id,
       slug: 'schedule2',
       id: params.page_id,
-      isUnderMorePage: params.page_id > 2
+      isUnderMorePage: params.page_id > 2,
+      hasMySchedule: true
     };
   },
   setupController(controller, model) {

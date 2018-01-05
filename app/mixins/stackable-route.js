@@ -2,8 +2,9 @@ import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 
 export default Mixin.create({
+  templateName: 'stackable',
   getRouteComponent(/* model */) {
-    return `routable-components/${(this.templateName || this.routeName).replace(/\./g,'/')}`;
+    return `routable-components/${(this.routableTemplateName || this.routeName).replace(/\./g,'/')}`;
   },
   getTitleBarComponent(model) {
     return `${this.getRouteComponent(model)}/title-bar`;
