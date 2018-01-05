@@ -6,20 +6,20 @@ export default Mixin.create({
   getRouteComponent(/* model */) {
     return `routable-components/${(this.routableTemplateName || this.routeName).replace(/\./g,'/')}`;
   },
-  getTitleBarComponent(model) {
+  getHeaderComponent(model) {
     return `${this.getRouteComponent(model)}/title-bar`;
   },
   layerIndex: computed(function() {
     let parentRoute = this.router.getParentRoute(this);
-    let parentRoutelayerIndex = parentRoute.get('layerIndex');
-    return parentRoutelayerIndex || 0;
+    let parentRouteLayerIndex = parentRoute.get('layerIndex');
+    return parentRouteLayerIndex || 0;
   }),
   setupController(controller, model) {
     this._super(controller, model);
     controller.setProperties({
       layerIndex: this.get('layerIndex'),
       routeComponent: this.getRouteComponent(model),
-      titleBarComponent: this.getTitleBarComponent(model)
+      headerComponent: this.getHeaderComponent(model)
     });
   }
 });

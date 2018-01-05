@@ -9,9 +9,9 @@
         </div>
       {{/each}}
     </div>
-    <div class="TitleBar">
-      {{#liquid-bind titleBarInfo rules=titleBarTransitionRules as |currentTitleBarInfo|}}
-        {{component currentTitleBarInfo.component}}
+    <div class="NavStack-header">
+      {{#liquid-bind headerInfo rules=headerTransitionRules as |currentHeaderInfo|}}
+        {{component currentHeaderInfo.component}}
       {{/liquid-bind}}
     </div>
     {{#if hasTabBar}}

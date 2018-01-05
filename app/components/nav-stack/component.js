@@ -20,13 +20,13 @@ export default Component.extend({
   layerIndexCssClass: computed('layer', function() {
     return `NavStack--layer${this.get('layer')}`;
   }),
-  titleBarComponent: computed.readOnly('stackItems.lastObject.titleBarComponent'),
+  headerComponent: computed.readOnly('stackItems.lastObject.headerComponent'),
   stackItems: computed('layer', 'navStacksService.stacks', function(){
     return this.get(`navStacksService.stacks.layer${this.get('layer')}`);
   }),
   stackDepth: computed.readOnly('stackItems.length'),
   components: computed.mapBy('stackItems', 'component'),
-  titleBarTransitionRules,
+  headerTransitionRules,
   didInsertElement(){
     this._super(...arguments);
     scheduleOnce('afterRender', this, this.handleStackDepthChange, true);
@@ -38,7 +38,7 @@ export default Component.extend({
     let stackDepth = this.get('stackItems.length') || 0;
     let rootComponentRef = this.get('stackItems.firstObject.component');
     let rootComponentIdentifier = getComponentIdentifier(rootComponentRef);
-    let titleBarAnimation = 'cut';
+    let headerAnimation = 'cut';
 
     let layer = this.get('layer');
     if (initialRender) {
@@ -54,18 +54,18 @@ export default Component.extend({
       this.scheduleCut();
     } else if (stackDepth < this._stackDepth) {
       this.scheduleSlideBack();
-      titleBarAnimation = 'slideBack';
+      headerAnimation = 'slideBack';
     } else if (stackDepth > this._stackDepth) {
       this.scheduleSlideForward();
-      titleBarAnimation = 'slideForward';
+      headerAnimation = 'slideForward';
     }
-    this.setTitleBarInfo(titleBarAnimation);
+    this.setHeaderInfo(headerAnimation);
     this._stackDepth = stackDepth;
     this._rootComponentIdentifier = rootComponentIdentifier;
   },
-  setTitleBarInfo(enterAnimation = 'cut') {
-    this.set('titleBarInfo', {
-      component: this.get('stackItems.lastObject.titleBarComponent'),
+  setHeaderInfo(enterAnimation = 'cut') {
+    this.set('headerInfo', {
+      component: this.get('stackItems.lastObject.headerComponent'),
       enterAnimation
     });
   },
@@ -173,7 +173,7 @@ export default Component.extend({
   }
 });
 
-function titleBarTransitionRules() {
+function headerTransitionRules() {
   this.transition(
     this.use('slideTitle', 'left'),
     this.toValue(function(newValue) {

@@ -11,11 +11,11 @@ export default Service.extend({
     this._counter = 1;
   },
 
-  pushItem(sourceId, layer, component, titleBarComponent) {
+  pushItem(sourceId, layer, component, headerComponent) {
     this._itemsById[sourceId] = {
       layer,
       component,
-      titleBarComponent,
+      headerComponent,
       order: this._counter++
     };
     this._schedule();
@@ -35,10 +35,10 @@ export default Service.extend({
     let itemsById = this._itemsById;
 
     Object.keys(itemsById).forEach((sourceId) => {
-      let { layer, component, titleBarComponent, order } = itemsById[sourceId];
+      let { layer, component, headerComponent, order } = itemsById[sourceId];
       let layerName = `layer${layer}`;
       newStacks[layerName] = newStacks[layerName] || Ember.A();
-      let newItem = component ? { component, titleBarComponent, order } : null;
+      let newItem = component ? { component, headerComponent, order } : null;
 
       newStacks[layerName].push(newItem);
     });

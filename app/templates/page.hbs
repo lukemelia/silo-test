@@ -2,14 +2,14 @@
   {{to-nav-stack
       layer=0
       item=(component 'routable-components/yapp/more')
-      titleBar=(component 'routable-components/yapp/more/title-bar')
+      header=(component 'routable-components/yapp/more/title-bar')
   }}
 {{/if}}
 
 {{to-nav-stack
     layer=layerIndex
     item=(component routeComponent model=model)
-    titleBar=(component titleBarComponent model=model)
+    header=(component headerComponent model=model)
 }}
 
 {{outlet}}

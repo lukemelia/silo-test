@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   layer: null, // PT.number.isRequired
   item: null, // component ref
-  titleBar: null, // component ref
+  header: null, // component ref
   service: Ember.inject.service('nav-stacks'),
   tagName: '',
   willRender() {
@@ -11,7 +11,7 @@ export default Ember.Component.extend({
       Ember.guidFor(this),
       this.get('layer'),
       this.get('item'),
-      this.get('titleBar')
+      this.get('header')
     );
   },
   willDestroyElement() {

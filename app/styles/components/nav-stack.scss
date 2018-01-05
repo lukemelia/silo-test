@@ -1,4 +1,4 @@
-$title-bar-height: 44px;
+$nav-stack-header-height: 44px;
 $tab-bar-height: 50px;
 
 .NavStack {
@@ -29,7 +29,7 @@ $tab-bar-height: 50px;
   &-item {
     position: absolute;
     width: 20%;
-    top: $title-bar-height;
+    top: $nav-stack-header-height;
     bottom: 0;
     box-sizing: border-box;
     overflow:hidden;
@@ -54,15 +54,15 @@ $tab-bar-height: 50px;
   &--withTabBar &-item {
     bottom: $tab-bar-height;
   }
-}
 
-.TitleBar {
-  position: absolute;
-  height: $title-bar-height;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,.2);
+  &-header {
+    position: absolute;
+    height: $nav-stack-header-height;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,.2);
+  }
 }
 
 .TabBar {
