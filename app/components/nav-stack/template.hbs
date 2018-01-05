@@ -1,11 +1,6 @@
 <div class='y-page-base perspective y-background-lightness-{{model.backgroundLightness}} theme-{{model.backgroundLightness}}'>
   <div class='y-page y-page-base {{themeClasses}}  {{unless hasTabBar 'no-tab-bar'}}'>
-    <div class="TitleBar">
-      {{#liquid-bind titleBarInfo rules=titleBarTransitionRules as |currentTitleBarInfo|}}
-        {{component currentTitleBarInfo.component}}
-      {{/liquid-bind}}
-    </div>
-    <div class={{concat 'silo-container layer-' layer}} style="left: 0;">
+    <div class="silo-container">
       {{#each components as |stackItemComponent index|}}
         <div class={{concat 'silo-outlet silo-' index '-outlet'}}>
           {{#if (lte (sub stackDepth index) 2)}}
@@ -13,6 +8,11 @@
           {{/if}}
         </div>
       {{/each}}
+    </div>
+    <div class="TitleBar">
+      {{#liquid-bind titleBarInfo rules=titleBarTransitionRules as |currentTitleBarInfo|}}
+        {{component currentTitleBarInfo.component}}
+      {{/liquid-bind}}
     </div>
     {{#if hasTabBar}}
       <div class="TabBar">

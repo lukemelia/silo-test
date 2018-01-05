@@ -6,6 +6,8 @@ import { get } from '@ember/object';
 import { scheduleOnce } from '@ember/runloop';
 import { animate } from 'liquid-fire';
 import { observer } from '@ember/object';
+import config from 'silo-test/config/environment';
+const { BIRDS_EYE_DEBUGGING } = config;
 const SLIDE_EASING = 'easeInOutQuint';
 const SLIDE_DURATION = 450;
 
@@ -88,6 +90,9 @@ export default Component.extend({
     let stackDepth = this.get('stackDepth');
     let layer = this.get('layer');
     let layerX = (stackDepth - 1) * -100;
+    if (!BIRDS_EYE_DEBUGGING) {
+      layerX = `${layerX}%`;
+    }
     this.$('.silo-container').css('left', layerX);
     if (layer > 0 & stackDepth > 0) {
       this.$().css('top', 0);
@@ -96,6 +101,9 @@ export default Component.extend({
   slideForward() {
     let stackDepth = this.get('stackDepth');
     let layerX = (stackDepth - 1) * -100;
+    if (!BIRDS_EYE_DEBUGGING) {
+      layerX = `${layerX}%`;
+    }
     let params = {
       left: layerX
     };
@@ -109,6 +117,9 @@ export default Component.extend({
   slideBack() {
     let stackDepth = this.get('stackDepth');
     let layerX = (stackDepth - 1) * -100;
+    if (!BIRDS_EYE_DEBUGGING) {
+      layerX = `${layerX}%`;
+    }
     let params = {
       left: layerX
     };
@@ -126,7 +137,7 @@ export default Component.extend({
   },
   slideUp() {
     let params = {
-      top: [0, 200]
+      top: [0, BIRDS_EYE_DEBUGGING ? '200px' : '100%']
     };
     animate(
       this.$(),
@@ -137,7 +148,7 @@ export default Component.extend({
   },
   slideDown() {
     let params = {
-      top: 200
+      top: [BIRDS_EYE_DEBUGGING ? '200px' : '100%', 0]
     };
     animate(
       this.$(),

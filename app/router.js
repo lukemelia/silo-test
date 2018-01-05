@@ -19,10 +19,10 @@ const Router = EmberRouter.extend({
 });
 
 function myScheduleRoutes(dsl) {
-  dsl.route('my-schedule', { resetNamespace: true }, function() {
+  dsl.route('my-schedule', function() {
     this.route('schedule-item', { path: '/schedule-items/:schedule_item_id' }, function() {
       this.route('rating-form');
-      this.route('document', { path: '/documents/:document_id' });
+      this.route('person');
     });
   });
 }
