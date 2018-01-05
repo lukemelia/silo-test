@@ -8,8 +8,9 @@
     <div class={{concat 'silo-container layer-' layer}} style="left: 0;">
       {{#each components as |stackItemComponent index|}}
         <div class={{concat 'silo-outlet silo-' index '-outlet'}}>
-          {{log (concat 'rendering new liquid-bind index' index)}}
-          {{component stackItemComponent}}
+          {{#if (lte (sub stackDepth index) 2)}}
+            {{component stackItemComponent}}
+          {{/if}}
         </div>
       {{/each}}
     </div>
