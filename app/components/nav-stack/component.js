@@ -195,7 +195,10 @@ function getComponentIdentifier(componentRef) {
   }
   let result = componentRef.name;
   if (componentRef.args.named.model) {
-    result += `:${get(componentRef.args.named.model.value(), 'id')}`;
+    let model = componentRef.args.named.model.value();
+    if (model) {
+      result += `:${get(model, 'id')}`;
+    }
   }
   return result;
 }
