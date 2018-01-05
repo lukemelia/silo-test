@@ -1,7 +1,7 @@
 {{#each (array 0 1 2) as |layer|}}
   {{nav-stack
       layer=layer
-      hasTabBar=(eq layer 0)
+      footer=(if (eq layer 0) (component 'tab-bar'))
   }}
 {{/each}}
 

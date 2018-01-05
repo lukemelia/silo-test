@@ -1,5 +1,5 @@
 $nav-stack-header-height: 44px;
-$tab-bar-height: 50px;
+$nav-stack-footer-height: 50px;
 
 .NavStack {
   position: absolute;
@@ -51,8 +51,8 @@ $tab-bar-height: 50px;
     }
   }
 
-  &--withTabBar &-item {
-    bottom: $tab-bar-height;
+  &--withFooter &-item {
+    bottom: $nav-stack-footer-height;
   }
 
   &-header {
@@ -63,24 +63,14 @@ $tab-bar-height: 50px;
     right: 0;
     background: rgba(0,0,0,.2);
   }
-}
 
-.TabBar {
-  position: absolute;
-  bottom: 0;
-  height: $tab-bar-height;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,.2);
-  ul {
-    margin: 0;
-    padding: 10px 0;
-    text-align: center;
-  }
-  li {
-    list-style: none;
-    display: inline-block;
-    font-size: .8rem;
+  &-footer {
+    position: absolute;
+    bottom: 0;
+    height: $nav-stack-footer-height;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,.2);
   }
 }
 

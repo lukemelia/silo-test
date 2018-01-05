@@ -43,3 +43,14 @@ body.birds-eye-debugging {
 .my-schedule-button::after {
   content: 'MS'
 }
+
+.TabBar-list {
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+  li {
+    list-style: none;
+    display: inline-block;
+    font-size: .8rem;
+  }
+}

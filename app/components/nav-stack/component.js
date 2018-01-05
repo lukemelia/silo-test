@@ -13,10 +13,11 @@ const SLIDE_DURATION = 450;
 
 export default Component.extend({
   layer: null, // PT.number.isRequired
+  footer: null, // componentRef, optional
   navStacksService: service('nav-stacks'),
   layout,
   classNames: ['NavStack'],
-  classNameBindings: ['layerIndexCssClass', 'hasTabBar:NavStack--withTabBar'],
+  classNameBindings: ['layerIndexCssClass', 'hasFooter:NavStack--withFooter'],
   layerIndexCssClass: computed('layer', function() {
     return `NavStack--layer${this.get('layer')}`;
   }),
@@ -26,6 +27,7 @@ export default Component.extend({
   }),
   stackDepth: computed.readOnly('stackItems.length'),
   components: computed.mapBy('stackItems', 'component'),
+  hasFooter: computed.bool('footer'),
   headerTransitionRules,
   didInsertElement(){
     this._super(...arguments);
