@@ -27,16 +27,28 @@ export default Component.extend({
   titleBarTransitionRules,
   didInsertElement(){
     this._super(...arguments);
-    this.scheduleCut();
-    this.setTitleBarInfo();
+    scheduleOnce('afterRender', this, this.handleStackDepthChange, true);
   },
   stackDepthChanged: observer('stackItems', function() {
-    let stackDepth = this.get('stackItems.length');
+    this.handleStackDepthChange();
+  }),
+  handleStackDepthChange(initialRender = false) {
+    let stackDepth = this.get('stackItems.length') || 0;
     let rootComponentRef = this.get('stackItems.firstObject.component');
     let rootComponentIdentifier = getComponentIdentifier(rootComponentRef);
     let titleBarAnimation = 'cut';
 
-    if (stackDepth === 1 && rootComponentIdentifier !== this._rootComponentIdentifier) {
+    let layer = this.get('layer');
+    if (initialRender) {
+      this.scheduleCut();
+    }
+    else if (layer > 0 && stackDepth > 0 && this._stackDepth === 0) {
+      this.scheduleSlideUp();
+    }
+    else if (layer > 0 && stackDepth === 0 && this._stackDepth > 0) {
+      this.scheduleSlideDown();
+    }
+    else if (stackDepth === 1 && rootComponentIdentifier !== this._rootComponentIdentifier) {
       this.scheduleCut();
     } else if (stackDepth < this._stackDepth) {
       this.scheduleSlideBack();
@@ -48,7 +60,7 @@ export default Component.extend({
     this.setTitleBarInfo(titleBarAnimation);
     this._stackDepth = stackDepth;
     this._rootComponentIdentifier = rootComponentIdentifier;
-  }),
+  },
   setTitleBarInfo(enterAnimation = 'cut') {
     this.set('titleBarInfo', {
       component: this.get('stackItems.lastObject.titleBarComponent'),
@@ -65,10 +77,21 @@ export default Component.extend({
   scheduleSlideForward() {
     scheduleOnce('afterRender', this, this.slideForward);
   },
+  scheduleSlideDown() {
+    this.cloneLastStackItem();
+    scheduleOnce('afterRender', this, this.slideDown);
+  },
+  scheduleSlideUp() {
+    scheduleOnce('afterRender', this, this.slideUp);
+  },
   cut() {
     let stackDepth = this.get('stackDepth');
+    let layer = this.get('layer');
     let layerX = (stackDepth - 1) * -100;
     this.$('.silo-container').css('left', layerX);
+    if (layer > 0 & stackDepth > 0) {
+      this.$().css('top', 0);
+    }
   },
   slideForward() {
     let stackDepth = this.get('stackDepth');
@@ -101,6 +124,34 @@ export default Component.extend({
       }
     });
   },
+  slideUp() {
+    let params = {
+      top: [0, 200]
+    };
+    animate(
+      this.$(),
+      params,
+      { duration: SLIDE_DURATION, easing: SLIDE_EASING },
+      'layer-slide'
+    );
+  },
+  slideDown() {
+    let params = {
+      top: 200
+    };
+    animate(
+      this.$(),
+      params,
+      { duration: SLIDE_DURATION, easing: SLIDE_EASING },
+      'layer-slide'
+    ).finally(() => {
+      if (this.clonedStackItem) {
+        this.clonedStackItem.remove();
+        this.clonedStackItem = null;
+      }
+    });
+  },
+
   cloneLastStackItem() {
     let clone = this.clonedStackItem = this.$('.silo-outlet:last-child').clone();
     clone.attr('id', `${this.elementId}_clonedStackItem`);
@@ -128,6 +179,9 @@ function titleBarTransitionRules() {
 }
 
 function getComponentIdentifier(componentRef) {
+  if (!componentRef) {
+    return 'none';
+  }
   let result = componentRef.name;
   if (componentRef.args.named.model) {
     result += `:${get(componentRef.args.named.model.value(), 'id')}`;

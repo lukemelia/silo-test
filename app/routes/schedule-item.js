@@ -22,6 +22,9 @@ export default Route.extend(AnimationAwareMixin, LiquidSiloRoute, {
     },
     drillDownToRatingForm() {
       this.transitionTo('schedule-item.rating-form');
+    },
+    showAttachedPerson() {
+      this.transitionTo('schedule-item.person');
     }
   }
 });
